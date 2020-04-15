@@ -1,7 +1,7 @@
 <p align="center">
 	<img src="https://user-images.githubusercontent.com/30529572/72455010-fb38d400-37e7-11ea-9c1e-8cdeb5f5906e.png" />
-	<h2 align="center"> < Insert Project Title Here > </h2>
-	<h4 align="center"> < Insert Project Description Here > <h4>
+	<h2 align="center">Screenshot Manager</h2>
+	<h4 align="center">An app for easily annotating your screenshots to suggest changes to frontend developers<h4>
 </p>
 
 ---
@@ -21,26 +21,27 @@
 ## Instructions to run
 
 * Pre-requisites:
-	-  < insert pre-requisite >
-	-  < insert pre-requisite >
+	- Android SDK
+	- Android Studio
+	- Flutter SDK
 
 * < directions to install > 
 ```bash
-< insert code >
+git clone https://github.com/BRO3886/Screenshot-Manager-App.git
+flutter doctor
 ```
 
 * < directions to execute >
 
 ```bash
-< insert code >
+flutter run -v
 ```
 
 <br>
 
 ## Contributors
 
-* [ < INSERT NAME HERE > ](INSERT_PROFILE_URL_HERE)
-* [ < INSERT NAME HERE > ](INSERT_PROFILE_URL_HERE)
+* [Siddhartha Varma](https://github.com/BRO3886)
 
 
 
