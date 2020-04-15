@@ -27,7 +27,7 @@
 
 * < directions to install > 
 ```bash
-git clone https://github.com/BRO3886/Screenshot-Manager-App.git
+git clone https://github.com/GDGVIT/Screenshot-Manager-App.git
 flutter doctor
 ```
 
