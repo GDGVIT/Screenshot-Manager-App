@@ -70,6 +70,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryColor.withOpacity(0.9),
         child: Icon(Icons.file_upload),
         tooltip: 'Upload screenshot',
         onPressed: pickImageFromGallery,
@@ -86,27 +87,44 @@ class _ProjectScreenState extends State<ProjectScreen> {
             );
           }
           myPhotos = snapshot.data;
-          return Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.5,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 10),
-              itemCount: myPhotos.length,
-              itemBuilder: (ctx, index) {
-                return Utility.imageFromBase64String(myPhotos[index].title);
-              },
-              // crossAxisCount: 2,
-              // childAspectRatio: 0.5,
-              // mainAxisSpacing: 5,
-              // crossAxisSpacing: 2,
-              // children: myPhotos.map((photo) {
-              //   return Utility.imageFromBase64String(photo.title);
-              // }).toList(),
-            ),
-          );
+          myPhotos.sort((b,a)=>a.id.compareTo(b.id));
+          if (myPhotos.length == 0) {
+            return Center(
+              child: Container(
+                margin: const EdgeInsets.all(60.0),
+                child: Text(
+                  'No images found\nPress upload button to start adding images',
+                  style: TextStyle(color: accentColor),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.5,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 15),
+                itemCount: myPhotos.length,
+                itemBuilder: (ctx, index) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Utility.imageFromBase64String(myPhotos[index].title),
+                  );
+                },
+                // crossAxisCount: 2,
+                // childAspectRatio: 0.5,
+                // mainAxisSpacing: 5,
+                // crossAxisSpacing: 2,
+                // children: myPhotos.map((photo) {
+                //   return Utility.imageFromBase64String(photo.title);
+                // }).toList(),
+              ),
+            );
+          }
         },
       ),
     );

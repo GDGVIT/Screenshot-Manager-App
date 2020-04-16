@@ -20,7 +20,7 @@ class Utility {
   static Image imageFromBase64String(String base64String) {
     return Image.memory(
       base64Decode(base64String),
-      fit: BoxFit.contain,
+      fit: BoxFit.fitWidth,
     );
   }
 }

@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Screenshot Manager',
       theme: ThemeData(
         primaryColor: Color(0xFF34495E),
@@ -74,7 +75,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       builder: (ctx) {
         Color color = Colors.green;
         return StatefulBuilder(
@@ -99,30 +100,44 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                       SizedBox(
                         height: 20,
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: TextField(
-                          controller: titlecontroller,
-                          onSubmitted: (string) => _onSubmit,
-                          decoration: InputDecoration(
-                            hintText: 'Name',
-                            fillColor: Colors.grey[200],
-                            border: InputBorder.none,
-                            filled: true,
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: TextField(
+                                controller: titlecontroller,
+                                onSubmitted: (string) => _onSubmit,
+                                decoration: InputDecoration(
+                                  hintText: 'Name',
+                                  fillColor: Colors.grey[200],
+                                  border: InputBorder.none,
+                                  filled: true,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          Spacer(),
+                          Container(
+                            height: 45,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Text('Done'),
+                              color: primaryColor,
+                              textColor: Colors.white,
+                              onPressed: () {
+                                _onSubmit();
+                                Navigator.of(context).maybePop();
+                                titlecontroller.clear();
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 20,
-                      ),
-                      FlatButton(
-                        child: Text('Done'),
-                        textColor: color,
-                        onPressed: () {
-                          _onSubmit();
-                          Navigator.of(context).maybePop();
-                          titlecontroller.clear();
-                        },
                       ),
                       SizedBox(
                         height: 20,
@@ -196,21 +211,28 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                   );
                 }
                 myProjects = snapshot.data;
-                return ListView.builder(
-                  itemCount: myProjects.length,
-                  itemBuilder: (ctx, index) {
-                    return Dismissible(
-                      key: Key(myProjects[index].id.toString()),
-                      onDismissed: (direction){
-                        dbHelper.deleteProject(myProjects[index].id);
-                        myProjects.removeWhere((project)=>project.id == myProjects[index].id);
-                      },
-                      child: MyProjectWidget(
-                        project: myProjects[index],
-                      ),
-                    );
-                  },
-                );
+                if (myProjects.length == 0) {
+                  return Center(
+                    child: Text('Tap \'+\' to add a new project', style: TextStyle(color: accentColor),),
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: myProjects.length,
+                    itemBuilder: (ctx, index) {
+                      return Dismissible(
+                        key: Key(myProjects[index].id.toString()),
+                        onDismissed: (direction) {
+                          dbHelper.deleteProject(myProjects[index].id);
+                          myProjects.removeWhere(
+                              (project) => project.id == myProjects[index].id);
+                        },
+                        child: MyProjectWidget(
+                          project: myProjects[index],
+                        ),
+                      );
+                    },
+                  );
+                }
               },
             ),
           ),
