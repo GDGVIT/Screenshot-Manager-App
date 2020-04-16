@@ -27,6 +27,7 @@ dependencies:
   sqflite:
   path_provider:
   provider:
+  flutter_colorpicker:
 
 dev_dependencies:
   flutter_test:
