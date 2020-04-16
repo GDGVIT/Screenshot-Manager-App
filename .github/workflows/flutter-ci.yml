@@ -45,7 +45,7 @@ jobs:
 
 
       # check formatting issues
-      - run: flutter format --set-exit-if-changed .
+      #- run: flutter format --set-exit-if-changed .
 
 
       # build apk
