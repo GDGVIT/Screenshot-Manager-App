@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
+final IMAGE_POST_URL = 'https://screenshot-manager.herokuapp.com/api/test';
+
 final primaryColor = Color(0xFF34495E);
 final accentColor = Color(0xFF798EA5);
 

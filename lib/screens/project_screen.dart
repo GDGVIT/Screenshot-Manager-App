@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:screenshot_manager/models/local_img.dart';
 import 'package:screenshot_manager/models/project.dart';
@@ -30,15 +32,53 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
   pickImageFromGallery() {
     ImagePicker.pickImage(source: ImageSource.gallery).then((file) async {
-      String imgString = Utility.base64String(file.readAsBytesSync());
-      Photo photo = Photo(
-        title: imgString,
-        projectId: widget.project.id,
-      );
-      photo = await dbHelper.savePhoto(photo);
-      print(
-          "photo saved with id = ${photo.id} and project id = ${photo.projectId}");
-      refreshPhotos();
+      try {
+        String filename = file.path.split("/").last;
+        FormData formData = FormData.fromMap(
+          {
+            'file': await MultipartFile.fromFile(
+              file.path,
+              filename: filename,
+            ),
+          },
+        );
+        Response response = await Dio().post(
+          IMAGE_POST_URL,
+          data: formData,
+          onReceiveProgress: (recv, total) {
+            print("$recv/$total");
+          },
+          onSendProgress: (sent, total) {
+            print("$sent/$total");
+          },
+          // options: Options(validateStatus: (statusCode) {
+          //   if(statusCode !=200){
+          //     Fluttertoast.showToast(msg: "Some error has occured");
+          //     return false;
+          //   }
+          //   return true;
+          // }),
+        );
+
+        print(response.statusCode);
+        print(response.data);
+        if (response.statusCode == 200) {
+          String imgString = Utility.base64String(file.readAsBytesSync());
+          Photo photo = Photo(
+            title: imgString,
+            projectId: widget.project.id,
+          );
+          photo = await dbHelper.savePhoto(photo);
+          print(
+              "photo saved with id = ${photo.id} and project id = ${photo.projectId}");
+          refreshPhotos();
+        } else {
+          Fluttertoast.showToast(msg: "Some error occured");
+        }
+      } on DioError catch (e) {
+        print(e.toString());
+        Fluttertoast.showToast(msg:"Some error occured");
+      }
     });
   }
 
@@ -87,7 +127,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
             );
           }
           myPhotos = snapshot.data;
-          myPhotos.sort((b,a)=>a.id.compareTo(b.id));
+          myPhotos.sort((b, a) => a.id.compareTo(b.id));
           if (myPhotos.length == 0) {
             return Center(
               child: Container(
