@@ -29,8 +29,7 @@ class DBHelper {
   initDB() async {
     io.Directory docDirectory = await getApplicationDocumentsDirectory();
     String path = join(docDirectory.path + DB_NAME);
-    var db = await openDatabase(path,
-        version: 1, onCreate: _onCreate);
+    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;
   }
 
@@ -43,7 +42,7 @@ class DBHelper {
       'CREATE TABLE $PROJECT_TABLE ($PROJECT_ID INTEGER PRIMARY KEY AUTOINCREMENT, $PROJECT_TITLE TEXT)',
     );
     await db.execute(
-      'CREATE TABLE $IMAGE_TABLE ($IMAGE_ID INTEGER , $IMAGE_TITLE TEXT, $IMAGE_PROJECT_ID INTEGER)',
+      'CREATE TABLE $IMAGE_TABLE ($IMAGE_ID INTEGER PRIMARY KEY AUTOINCREMENT, $IMAGE_TITLE TEXT, $IMAGE_PROJECT_ID INTEGER)',
     );
   }
 

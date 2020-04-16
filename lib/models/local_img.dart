@@ -7,22 +7,23 @@ class Photo {
   String title;
   // List<Tag> tags;
   Photo({
-    @required this.id,
+    this.id,
     @required this.title,
+    @required this.projectId,
   });
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      "id": id,
-      "projectId":projectId,
-      "title": title,
+      "imageid": id,
+      "projectId": projectId,
+      "imagetitle": title,
     };
     return map;
   }
 
-  Photo.fromMap(Map<String, dynamic> map){
-    id = map['id'];
+  Photo.fromMap(Map<String, dynamic> map) {
+    id = map['imageid'];
     projectId = map['projectId'];
-    title = map['title'];
+    title = map['imagetitle'];
   }
 }

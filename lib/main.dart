@@ -254,14 +254,14 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
 //     dbHelper = DBHelper();
 //   }
 
-//   pickImageFromGallery() {
-//     ImagePicker.pickImage(source: ImageSource.gallery).then((file) {
-//       String imgString = Utility.base64String(file.readAsBytesSync());
-//       Photo photo = Photo(id: 0, title: imgString);
-//       dbHelper.save(photo);
-//       refreshPhotos();
-//     });
-//   }
+  // pickImageFromGallery() {
+  //   ImagePicker.pickImage(source: ImageSource.gallery).then((file) {
+  //     String imgString = Utility.base64String(file.readAsBytesSync());
+  //     Photo photo = Photo(id: 0, title: imgString);
+  //     dbHelper.save(photo);
+  //     refreshPhotos();
+  //   });
+  // }
 
 //   refreshPhotos() {
 //     dbHelper.getPhotos().then((imgArray) {
