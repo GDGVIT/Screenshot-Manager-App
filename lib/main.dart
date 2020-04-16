@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:screenshot_manager/models/project.dart';
 import 'package:screenshot_manager/services/db_helper.dart';
 import 'package:screenshot_manager/utils.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xFF34495E),
         accentColor: Color(0xFF798EA5),
+        canvasColor: Color(0xFFfafcff),
         pageTransitionsTheme: PageTransitionsTheme(builders: {
           TargetPlatform.android: ZoomPageTransitionsBuilder(),
         }),
@@ -38,6 +40,13 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   void initState() {
     myProjects = [];
     dbHelper = DBHelper();
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: primaryColor,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
+      ),
+    );
     super.initState();
   }
 
@@ -148,6 +157,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        // backgroundColor: Theme.of(context).canvasColor,
         title: Text('Screenshot Manager'),
         actions: <Widget>[
           Tooltip(
@@ -167,8 +178,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.05,
-                vertical: 10),
+                horizontal: MediaQuery.of(context).size.width * 0.05),
+            padding: EdgeInsets.only(top: 20, bottom: 15),
             alignment: Alignment.centerLeft,
             child: Text(
               'My Projects',
@@ -188,8 +199,15 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 return ListView.builder(
                   itemCount: myProjects.length,
                   itemBuilder: (ctx, index) {
-                    return MyProjectWidget(
-                      project: myProjects[index],
+                    return Dismissible(
+                      key: Key(myProjects[index].id.toString()),
+                      onDismissed: (direction){
+                        dbHelper.deleteProject(myProjects[index].id);
+                        myProjects.removeWhere((project)=>project.id == myProjects[index].id);
+                      },
+                      child: MyProjectWidget(
+                        project: myProjects[index],
+                      ),
                     );
                   },
                 );
@@ -254,14 +272,14 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
 //     dbHelper = DBHelper();
 //   }
 
-  // pickImageFromGallery() {
-  //   ImagePicker.pickImage(source: ImageSource.gallery).then((file) {
-  //     String imgString = Utility.base64String(file.readAsBytesSync());
-  //     Photo photo = Photo(id: 0, title: imgString);
-  //     dbHelper.save(photo);
-  //     refreshPhotos();
-  //   });
-  // }
+// pickImageFromGallery() {
+//   ImagePicker.pickImage(source: ImageSource.gallery).then((file) {
+//     String imgString = Utility.base64String(file.readAsBytesSync());
+//     Photo photo = Photo(id: 0, title: imgString);
+//     dbHelper.save(photo);
+//     refreshPhotos();
+//   });
+// }
 
 //   refreshPhotos() {
 //     dbHelper.getPhotos().then((imgArray) {

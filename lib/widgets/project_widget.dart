@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../models/project.dart';
 import '../screens/project_screen.dart';
 
 class MyProjectWidget extends StatelessWidget {
   final Project project;
-  MyProjectWidget({this.project, Key key}) : super(key: key);
+  MyProjectWidget({this.project});
 
   @override
   Widget build(BuildContext context) {
