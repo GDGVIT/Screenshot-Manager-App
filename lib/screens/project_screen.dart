@@ -46,10 +46,11 @@ class _ProjectScreenState extends State<ProjectScreen> {
           IMAGE_POST_URL,
           data: formData,
           onReceiveProgress: (recv, total) {
-            print("$recv/$total");
+            print("recvd: $recv/$total");
           },
           onSendProgress: (sent, total) {
-            print("$sent/$total");
+            print("sent: $sent/$total");
+            
           },
           // options: Options(validateStatus: (statusCode) {
           //   if(statusCode !=200){
@@ -77,7 +78,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
         }
       } on DioError catch (e) {
         print(e.toString());
-        Fluttertoast.showToast(msg:"Some error occured");
+        Fluttertoast.showToast(msg: "Some error occured");
       }
     });
   }
