@@ -54,7 +54,6 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       builder: (ctx) {
-        Color color = Colors.green;
         return StatefulBuilder(
           builder: (context, sheetSetState) {
             return SingleChildScrollView(

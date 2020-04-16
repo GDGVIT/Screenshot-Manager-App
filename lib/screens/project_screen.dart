@@ -43,7 +43,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
           },
         );
         Response response = await Dio().post(
-          IMAGE_POST_URL,
+          imagePostUrl,
           data: formData,
           onReceiveProgress: (recv, total) {
             print("recvd: $recv/$total");
