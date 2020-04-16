@@ -38,17 +38,18 @@ class _ProjectScreenState extends State<ProjectScreen> {
       photo = await dbHelper.savePhoto(photo);
       print(
           "photo saved with id = ${photo.id} and project id = ${photo.projectId}");
+      refreshPhotos();
     });
   }
 
-  // refreshPhotos() {
-  //   dbHelper.getPhotos(widget.project.id).then((imgArray) {
-  //     setState(() {
-  //       myPhotos.clear();
-  //       myPhotos.addAll(imgArray);
-  //     });
-  //   });
-  // }
+  refreshPhotos() {
+    dbHelper.getPhotos(widget.project.id).then((imgArray) {
+      setState(() {
+        myPhotos.clear();
+        myPhotos.addAll(imgArray);
+      });
+    });
+  }
 
   photoView() {
     return Padding(
