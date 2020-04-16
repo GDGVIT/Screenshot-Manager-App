@@ -88,7 +88,7 @@ class DBHelper {
     var dbClient = await db;
     int deletedPhotos = await dbClient.delete(IMAGE_TABLE, where: '$IMAGE_PROJECT_ID == $id ');
     int deletedProject = await dbClient.delete(PROJECT_TABLE, where: '$PROJECT_ID == $id');
-    print("project with id = $deletedProject removed");
+    print("project with id = $id removed, $deletedPhotos photos");
     return deletedProject;
   }
 

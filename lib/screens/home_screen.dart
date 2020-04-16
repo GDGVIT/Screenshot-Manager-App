@@ -5,12 +5,10 @@ import '../models/project.dart';
 import '../services/db_helper.dart';
 import '../utils.dart';
 
-
 class MyHomeScreen extends StatefulWidget {
   @override
   _MyHomeScreenState createState() => _MyHomeScreenState();
 }
-
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
   List<Project> myProjects;
@@ -192,7 +190,10 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 myProjects = snapshot.data;
                 if (myProjects.length == 0) {
                   return Center(
-                    child: Text('Tap \'+\' to add a new project', style: TextStyle(color: accentColor),),
+                    child: Text(
+                      'Tap \'+\' to add a new project',
+                      style: TextStyle(color: accentColor),
+                    ),
                   );
                 } else {
                   return ListView.builder(
@@ -200,6 +201,24 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                     itemBuilder: (ctx, index) {
                       return Dismissible(
                         key: Key(myProjects[index].id.toString()),
+                        background: Container(
+                          margin: EdgeInsets.symmetric(vertical: 17),
+                          padding: EdgeInsets.all(10),
+                          color: Colors.red,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Icon(Icons.delete),
+                          ),
+                        ),
+                        secondaryBackground: Container(
+                          margin: EdgeInsets.symmetric(vertical: 17),
+                          padding: EdgeInsets.all(10),
+                          color: Colors.red,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Icon(Icons.delete),
+                          ),
+                        ),
                         onDismissed: (direction) {
                           dbHelper.deleteProject(myProjects[index].id);
                           myProjects.removeWhere(
