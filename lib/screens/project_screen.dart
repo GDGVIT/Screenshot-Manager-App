@@ -30,8 +30,11 @@ class _ProjectScreenState extends State<ProjectScreen> {
     super.initState();
   }
 
+
   pickImageFromGallery() {
-    ImagePicker.pickImage(source: ImageSource.gallery).then((file) async {
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 50, maxHeight:deviceHeight *0.7, maxWidth: deviceWidth * 0.7 ).then((file) async {
       try {
         String filename = file.path.split("/").last;
         FormData formData = FormData.fromMap(
