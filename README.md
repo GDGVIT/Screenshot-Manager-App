@@ -10,10 +10,11 @@
 
 
 ## Functionalities
-- [ ]  < insert functionality >
-- [ ]  < insert functionality >
-- [ ]  < insert functionality >
-- [ ]  < insert functionality >
+- [ ]  Create projects and start adding screenshots
+- [ ]  All screenshots managed under projects
+- [ ]  Annotate and comment on screenshots
+- [ ]  Easily delete projects and screenshots
+
 
 <br>
 
