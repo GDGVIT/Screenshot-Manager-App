@@ -5,7 +5,7 @@ name: Flutter CI
 on:
   push:
     branches:
-      - master
+      - debugtest
 
 # a workflow is made up of multiple jobs
 
@@ -41,7 +41,7 @@ jobs:
 
 
       # check dart code for errors
-      - run: flutter analyze .
+      #- run: flutter analyze .
 
 
       # check formatting issues

@@ -34,8 +34,6 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
   showTextBox(int tagId, String comment, String name) {
     print('tag id is $tagId');
 
-    String editedComment;
-
     showDialog(
       context: context,
       // barrierDismissible: false,
@@ -49,7 +47,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
             child: TextFormField(
               initialValue: comment,
               onChanged: (value) {
-                editedComment = value;
+                // editedComment = value;
                 _onSaved(tagId, value);
               },
               maxLines: 4,
