@@ -98,7 +98,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
           Photo photo = Photo(
             title: imgString,
             projectId: widget.project.id,
-            tags: tagList,
           );
           photo = await dbHelper.savePhoto(photo);
           print(
@@ -130,29 +129,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
     });
   }
 
-  photoView() {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: 0.5,
-        mainAxisSpacing: 5,
-        crossAxisSpacing: 2,
-        children: myPhotos.map((photo) {
-          return GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PhotoDetailScreen(photo),
-              ),
-            ),
-            child: Utility.imageFromBase64String(photo.title),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,6 +140,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
       ),
       appBar: AppBar(
         title: Text(widget.project.title),
+        // centerTitle: true,
       ),
       body: FutureBuilder(
         future: dbHelper.getPhotos(widget.project.id),
@@ -199,7 +176,19 @@ class _ProjectScreenState extends State<ProjectScreen> {
                 itemBuilder: (ctx, index) {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Utility.imageFromBase64String(myPhotos[index].title),
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PhotoDetailScreen(
+                            myPhotos[index],
+                          ),
+                        ),
+                      ),
+                      child: Utility.imageFromBase64String(
+                        myPhotos[index].title,
+                      ),
+                    ),
                   );
                 },
                 // crossAxisCount: 2,

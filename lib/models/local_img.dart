@@ -10,7 +10,7 @@ class Photo {
     this.id,
     @required this.title,
     @required this.projectId,
-    this.tags,
+    // this.tags,
   });
 
   Map<String, dynamic> toMap() {
