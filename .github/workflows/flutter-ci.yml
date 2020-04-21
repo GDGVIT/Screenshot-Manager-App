@@ -61,7 +61,7 @@ jobs:
       #send artifact to telegram channel
       - uses: appleboy/telegram-action@master
         with: 
-          to: ${{secrets.TELEGRAM_CHANNEL}}
+          to: ${{secrets.TELEGRAM_ID}}
           token: ${{secrets.TELEGRAM_BOT_APIKEY}}
           document: build/app/outputs/apk/release/app-release.apk
           message: Here is the latest testing build for you
