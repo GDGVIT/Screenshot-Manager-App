@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -6,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:screenshot_manager/models/local_img.dart';
 import 'package:screenshot_manager/models/project.dart';
+import 'package:screenshot_manager/models/tag.dart';
+import 'package:screenshot_manager/screens/photo_detail.dart';
 import 'package:screenshot_manager/services/db_helper.dart';
 
 import '../utils.dart';
@@ -30,11 +33,15 @@ class _ProjectScreenState extends State<ProjectScreen> {
     super.initState();
   }
 
-
   pickImageFromGallery() {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
-    ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 50, maxHeight:deviceHeight *0.7, maxWidth: deviceWidth * 0.7 ).then((file) async {
+    ImagePicker.pickImage(
+            source: ImageSource.gallery,
+            imageQuality: 50,
+            maxHeight: deviceHeight * 0.7,
+            maxWidth: deviceWidth * 0.7)
+        .then((file) async {
       try {
         String filename = file.path.split("/").last;
         FormData formData = FormData.fromMap(
@@ -53,7 +60,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
           },
           onSendProgress: (sent, total) {
             print("sent: $sent/$total");
-            
           },
           // options: Options(validateStatus: (statusCode) {
           //   if(statusCode !=200){
@@ -67,14 +73,43 @@ class _ProjectScreenState extends State<ProjectScreen> {
         print(response.statusCode);
         print(response.data);
         if (response.statusCode == 200) {
+          List<Tag> tagList = [];
           String imgString = Utility.base64String(file.readAsBytesSync());
+          Map<String, dynamic> responseObject = response.data;
+          responseObject.keys.toList().forEach((key) {
+            final data = responseObject[key];
+            data.forEach((veryComplexMap) {
+              String tagName = key;
+              Tag tag = Tag(
+                tagName: tagName,
+                startCoordinate: Coord(
+                  veryComplexMap['start']['x'],
+                  veryComplexMap['start']['y'],
+                ),
+                endCoordinate: Coord(
+                  veryComplexMap['end']['x'],
+                  veryComplexMap['end']['y'],
+                ),
+              );
+              tagList.add(tag);
+            });
+          });
+          print(tagList);
           Photo photo = Photo(
             title: imgString,
             projectId: widget.project.id,
+            tags: tagList,
           );
           photo = await dbHelper.savePhoto(photo);
           print(
               "photo saved with id = ${photo.id} and project id = ${photo.projectId}");
+          tagList.forEach((tag) async {
+            tag.photoId = photo.id;
+            tag = await dbHelper.saveTag(tag);
+            print(
+                'tag saved as ${tag.tagName} for photo ${tag.photoId} with start as ${tag.startCoordinate.toString()} and end as ${tag.endCoordinate.toString()}');
+          });
+
           refreshPhotos();
         } else {
           Fluttertoast.showToast(msg: "Some error occured");
@@ -104,7 +139,15 @@ class _ProjectScreenState extends State<ProjectScreen> {
         mainAxisSpacing: 5,
         crossAxisSpacing: 2,
         children: myPhotos.map((photo) {
-          return Utility.imageFromBase64String(photo.title);
+          return GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PhotoDetailScreen(photo),
+              ),
+            ),
+            child: Utility.imageFromBase64String(photo.title),
+          );
         }).toList(),
       ),
     );
