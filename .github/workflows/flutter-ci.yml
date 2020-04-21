@@ -44,7 +44,7 @@ jobs:
       #- run: flutter analyze .
 
 
-      # check formatting issues
+      # check formatting issues, removed for a while
       #- run: flutter format --set-exit-if-changed .
 
 
