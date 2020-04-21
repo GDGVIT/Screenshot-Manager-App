@@ -47,7 +47,6 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
             child: TextFormField(
               initialValue: comment,
               onChanged: (value) {
-                // editedComment = value;
                 _onSaved(tagId, value);
               },
               maxLines: 4,
@@ -61,18 +60,6 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
             ),
           ),
         ),
-        // actions: <Widget>[
-        //   FlatButton(
-        //     child: Text('Submit'),
-        //     textColor: primaryColor,
-        //     onPressed: ()=> _onSaved(tagId, editedComment),
-        //   ),
-        //   FlatButton(
-        //     child: Text('Cancel'),
-        //     textColor: primaryColor,
-        //     onPressed: () => Navigator.of(context).pop(),
-        //   ),
-        // ],
       ),
     );
   }
