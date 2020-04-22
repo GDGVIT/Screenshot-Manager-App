@@ -147,6 +147,15 @@ class DBHelper {
     return deletedProject;
   }
 
+  Future<int> deletePhoto(int photoID) async{
+    var dbClient = await db;
+    int photoDeleted = await dbClient.delete(IMAGE_TABLE, where: '$IMAGE_ID == $photoID');
+    print('image with id $photoID deleted, function returned $photoDeleted');
+    return photoDeleted;
+  }
+
+
+
   Future close() async {
     var dbClient = await db;
     dbClient.close();

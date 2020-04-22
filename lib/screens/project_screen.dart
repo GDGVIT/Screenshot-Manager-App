@@ -39,8 +39,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
     ImagePicker.pickImage(
             source: ImageSource.gallery,
             imageQuality: 50,
-            maxHeight: deviceHeight * 0.7,
-            maxWidth: deviceWidth * 0.7)
+            maxHeight: deviceHeight,
+            maxWidth: deviceWidth,
+            )
         .then((file) async {
       try {
         String filename = file.path.split("/").last;
