@@ -44,7 +44,7 @@ jobs:
       #- run: flutter analyze .
 
 
-      # check formatting issues
+      # check formatting issues, removed for a while
       #- run: flutter format --set-exit-if-changed .
 
 
@@ -57,6 +57,14 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/apk/release/app-release.apk
+
+      #send artifact to telegram channel
+      - uses: appleboy/telegram-action@master
+        with: 
+          to: ${{secrets.TELEGRAM_ID}}
+          token: ${{secrets.TELEGRAM_BOT_APIKEY}}
+          document: build/app/outputs/apk/release/app-release.apk
+          message: Here is the latest testing build for you
 
 
 

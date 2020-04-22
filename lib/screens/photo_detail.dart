@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:screenshot_manager/models/local_img.dart';
 import 'package:screenshot_manager/models/tag.dart';
 import 'package:screenshot_manager/services/db_helper.dart';
@@ -70,6 +71,17 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
       appBar: AppBar(
         title: Text('Add/Edit Annotation'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: (){
+              dbHelper.deletePhoto(widget.photo.id).then((value){
+                Navigator.of(context).pop();
+                Fluttertoast.showToast(msg: 'Photo removed');
+              });
+            },
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: dbHelper.getTags(widget.photo.id),
@@ -119,45 +131,61 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  Stack(
-                    children: <Widget>[
-                      Utility.imageFromBase64String(widget.photo.title),
-                      for (int i = 0; i < tagList.length; i++)
-                        Positioned(
-                          top: double.parse('${tagList[i].startCoordinate.y}'),
-                          child: GestureDetector(
-                            onTap: () {
-                              showTextBox(
-                                tagList[i].tagId,
-                                tagList[i].comment,
-                                tagList[i].tagName,
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: primaryColor.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.zero,
-                                child: Text(
-                                  '${i + 1}',
-                                  style: TextStyle(
-                                      color: Colors.red, fontSize: 16),
-                                ),
-                              ),
-                              width: double.parse(
-                                      '${tagList[i].endCoordinate.x}') -
-                                  double.parse(
-                                      '${tagList[i].startCoordinate.x}'),
-                              height: double.parse(
-                                      '${tagList[i].endCoordinate.y}') -
-                                  double.parse(
-                                      '${tagList[i].startCoordinate.y}'),
-                            ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.76,
+                    height: MediaQuery.of(context).size.height * 0.76,
+                    child: Stack(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Utility.imageFromBase64String(
+                            widget.photo.title,
                           ),
                         ),
-                    ],
+                        for (int i = 0; i < tagList.length; i++)
+                          Positioned(
+                            top: double.parse(
+                                    '${tagList[i].startCoordinate.y}') *
+                                0.75,
+                            child: GestureDetector(
+                              onTap: () {
+                                showTextBox(
+                                  tagList[i].tagId,
+                                  tagList[i].comment,
+                                  tagList[i].tagName,
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: primaryColor.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.zero,
+                                  child: Text(
+                                    '${i + 1}',
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 16),
+                                  ),
+                                ),
+                                width: (double.parse(
+                                            '${tagList[i].endCoordinate.x}') -
+                                        double.parse(
+                                            '${tagList[i].startCoordinate.x}')) *
+                                    0.75,
+                                height: (double.parse(
+                                            '${tagList[i].endCoordinate.y}') -
+                                        double.parse(
+                                            '${tagList[i].startCoordinate.y}')) *
+                                    0.75,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                 ],
               ),
