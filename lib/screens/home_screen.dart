@@ -79,7 +79,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                       Row(
                         children: <Widget>[
                           Container(
-                            width: MediaQuery.of(context).size.width * 0.7,
+                            width: MediaQuery.of(context).size.width * 0.65,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: TextField(
@@ -218,10 +218,19 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                             child: Icon(Icons.delete),
                           ),
                         ),
+                        direction: DismissDirection.endToStart,
                         onDismissed: (direction) {
-                          dbHelper.deleteProject(myProjects[index].id);
-                          myProjects.removeWhere(
-                              (project) => project.id == myProjects[index].id);
+                          dbHelper
+                              .deleteProject(myProjects[index].id)
+                              .then((_) {
+                            myProjects.removeWhere((project) =>
+                                project.id == myProjects[index].id);
+                            if(myProjects.length == 0){
+                              setState(() {
+                                dbHelper.getProjects();
+                              });
+                            }
+                          });
                         },
                         child: MyProjectWidget(
                           project: myProjects[index],

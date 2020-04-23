@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -26,8 +25,10 @@ class _ProjectScreenState extends State<ProjectScreen> {
   Future<File> imageFile;
   Image image;
   DBHelper dbHelper;
+  bool isLoading=false;
   @override
   void initState() {
+    isLoading = false;
     dbHelper = DBHelper();
     myPhotos = [];
     super.initState();
@@ -37,13 +38,15 @@ class _ProjectScreenState extends State<ProjectScreen> {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
     ImagePicker.pickImage(
-            source: ImageSource.gallery,
-            imageQuality: 50,
-            maxHeight: deviceHeight,
-            maxWidth: deviceWidth,
-            )
-        .then((file) async {
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxHeight: deviceHeight,
+      maxWidth: deviceWidth,
+    ).then((file) async {
       try {
+        setState(() {
+          isLoading = true;
+        });
         String filename = file.path.split("/").last;
         FormData formData = FormData.fromMap(
           {
@@ -109,7 +112,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
             print(
                 'tag saved as ${tag.tagName} for photo ${tag.photoId} with start as ${tag.startCoordinate.toString()} and end as ${tag.endCoordinate.toString()}');
           });
-
           refreshPhotos();
         } else {
           Fluttertoast.showToast(msg: "Some error occured");
@@ -118,6 +120,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
         print(e.toString());
         Fluttertoast.showToast(msg: "Some error occured");
       }
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
@@ -155,52 +160,58 @@ class _ProjectScreenState extends State<ProjectScreen> {
           myPhotos.sort((b, a) => a.id.compareTo(b.id));
           if (myPhotos.length == 0) {
             return Center(
-              child: Container(
-                margin: const EdgeInsets.all(60.0),
-                child: Text(
-                  'No images found\nPress upload button to start adding images',
-                  style: TextStyle(color: accentColor),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
-          } else {
-            return Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.5,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 15),
-                itemCount: myPhotos.length,
-                itemBuilder: (ctx, index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PhotoDetailScreen(
-                            myPhotos[index],
-                          ),
-                        ),
-                      ),
-                      child: Utility.imageFromBase64String(
-                        myPhotos[index].title,
+              child: (isLoading)
+                  ? CircularProgressIndicator()
+                  : Container(
+                      margin: const EdgeInsets.all(60.0),
+                      child: Text(
+                        'No images found\nPress upload button to start adding images',
+                        style: TextStyle(color: accentColor),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  );
-                },
-                // crossAxisCount: 2,
-                // childAspectRatio: 0.5,
-                // mainAxisSpacing: 5,
-                // crossAxisSpacing: 2,
-                // children: myPhotos.map((photo) {
-                //   return Utility.imageFromBase64String(photo.title);
-                // }).toList(),
-              ),
             );
+          } else {
+            return (isLoading)
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.5,
+                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 15),
+                      itemCount: myPhotos.length,
+                      itemBuilder: (ctx, index) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: GestureDetector(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PhotoDetailScreen(
+                                  myPhotos[index],
+                                ),
+                              ),
+                            ),
+                            child: Utility.imageFromBase64String(
+                              myPhotos[index].title,
+                            ),
+                          ),
+                        );
+                      },
+                      // crossAxisCount: 2,
+                      // childAspectRatio: 0.5,
+                      // mainAxisSpacing: 5,
+                      // crossAxisSpacing: 2,
+                      // children: myPhotos.map((photo) {
+                      //   return Utility.imageFromBase64String(photo.title);
+                      // }).toList(),
+                    ),
+                  );
           }
         },
       ),
