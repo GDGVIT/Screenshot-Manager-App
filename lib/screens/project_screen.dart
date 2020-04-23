@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -26,7 +25,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
   Future<File> imageFile;
   Image image;
   DBHelper dbHelper;
-  bool isLoading;
+  bool isLoading=false;
   @override
   void initState() {
     isLoading = false;

@@ -132,8 +132,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                     height: 20,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.76,
-                    height: MediaQuery.of(context).size.height * 0.76,
+                    width: MediaQuery.of(context).size.width * 0.75,
                     child: Stack(
                       children: <Widget>[
                         ClipRRect(
@@ -145,8 +144,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                         for (int i = 0; i < tagList.length; i++)
                           Positioned(
                             top: double.parse(
-                                    '${tagList[i].startCoordinate.y}') *
-                                0.75,
+                                    '${tagList[i].startCoordinate.y}')*0.75,
                             child: GestureDetector(
                               onTap: () {
                                 showTextBox(
@@ -171,13 +169,11 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                                 width: (double.parse(
                                             '${tagList[i].endCoordinate.x}') -
                                         double.parse(
-                                            '${tagList[i].startCoordinate.x}')) *
-                                    0.75,
+                                            '${tagList[i].startCoordinate.x}'))*0.75,
                                 height: (double.parse(
                                             '${tagList[i].endCoordinate.y}') -
                                         double.parse(
-                                            '${tagList[i].startCoordinate.y}')) *
-                                    0.75,
+                                            '${tagList[i].startCoordinate.y}'))*0.75,
                               ),
                             ),
                           ),
@@ -185,7 +181,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                 ],
               ),
