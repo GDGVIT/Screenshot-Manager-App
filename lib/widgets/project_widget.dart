@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:screenshot_manager/utils.dart';
 import '../models/project.dart';
 import '../screens/project_screen.dart';
 
@@ -9,6 +10,7 @@ class MyProjectWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 100,
       margin: EdgeInsets.symmetric(
         vertical: MediaQuery.of(context).size.height * 0.02,
         horizontal: MediaQuery.of(context).size.width * 0.06,
@@ -17,8 +19,8 @@ class MyProjectWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.1),
-            blurRadius: 5,
+            color: Color(0x25aaa9a9),
+            blurRadius: 10,
           )
         ],
       ),
@@ -35,36 +37,40 @@ class MyProjectWidget extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Flexible(
-                  flex: 1,
-                  child: Container(
-                    height: 100,
-                    color: Colors.white,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text('Comments'),
-                    ),
-                  ),
-                ),
-                Flexible(
                   flex: 3,
                   child: Container(
-                    height: 100,
-                    padding: EdgeInsets.all(5),
+                    // height: 100,
+                    padding: EdgeInsets.all(10),
                     child: Align(
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         project.title,
                         softWrap: true,
                         style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                        ),
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ),
                     color: Theme.of(context).primaryColor,
                   ),
-                )
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    // height: 100,
+                    color: Colors.white,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CircleAvatar(
+                        backgroundColor: primaryColor,
+                        foregroundColor: Colors.white,
+                        child: Icon(Icons.navigate_next),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

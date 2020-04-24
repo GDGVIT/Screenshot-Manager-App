@@ -25,7 +25,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
   Future<File> imageFile;
   Image image;
   DBHelper dbHelper;
-  bool isLoading=false;
+  bool isLoading = false;
   @override
   void initState() {
     isLoading = false;
@@ -39,90 +39,94 @@ class _ProjectScreenState extends State<ProjectScreen> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     ImagePicker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 50,
+      imageQuality: 100,
       maxHeight: deviceHeight,
       maxWidth: deviceWidth,
     ).then((file) async {
-      try {
-        setState(() {
-          isLoading = true;
-        });
-        String filename = file.path.split("/").last;
-        FormData formData = FormData.fromMap(
-          {
-            'file': await MultipartFile.fromFile(
-              file.path,
-              filename: filename,
-            ),
-          },
-        );
-        Response response = await Dio().post(
-          imagePostUrl,
-          data: formData,
-          onReceiveProgress: (recv, total) {
-            print("recvd: $recv/$total");
-          },
-          onSendProgress: (sent, total) {
-            print("sent: $sent/$total");
-          },
-          // options: Options(validateStatus: (statusCode) {
-          //   if(statusCode !=200){
-          //     Fluttertoast.showToast(msg: "Some error has occured");
-          //     return false;
-          //   }
-          //   return true;
-          // }),
-        );
-
-        print(response.statusCode);
-        print(response.data);
-        if (response.statusCode == 200) {
-          List<Tag> tagList = [];
-          String imgString = Utility.base64String(file.readAsBytesSync());
-          Map<String, dynamic> responseObject = response.data;
-          responseObject.keys.toList().forEach((key) {
-            final data = responseObject[key];
-            data.forEach((veryComplexMap) {
-              String tagName = key;
-              Tag tag = Tag(
-                tagName: tagName,
-                startCoordinate: Coord(
-                  veryComplexMap['start']['x'],
-                  veryComplexMap['start']['y'],
-                ),
-                endCoordinate: Coord(
-                  veryComplexMap['end']['x'],
-                  veryComplexMap['end']['y'],
-                ),
-              );
-              tagList.add(tag);
-            });
+      bool fileProvided = await file.exists();
+      if (fileProvided) {
+        try {
+          setState(() {
+            isLoading = true;
           });
-          print(tagList);
-          Photo photo = Photo(
-            title: imgString,
-            projectId: widget.project.id,
+          String filename = file.path.split("/").last;
+          FormData formData = FormData.fromMap(
+            {
+              'file': await MultipartFile.fromFile(
+                file.path,
+                filename: filename,
+              ),
+            },
           );
-          photo = await dbHelper.savePhoto(photo);
-          print(
-              "photo saved with id = ${photo.id} and project id = ${photo.projectId}");
-          tagList.forEach((tag) async {
-            tag.photoId = photo.id;
-            tag = await dbHelper.saveTag(tag);
+          Response response = await Dio().post(
+            imagePostUrl,
+            data: formData,
+            onReceiveProgress: (recv, total) {
+              print("recvd: $recv/$total");
+            },
+            onSendProgress: (sent, total) {
+              print("sent: $sent/$total");
+            },
+            // options: Options(validateStatus: (statusCode) {
+            //   if(statusCode !=200){
+            //     Fluttertoast.showToast(msg: "Some error has occured");
+            //     return false;
+            //   }
+            //   return true;
+            // }),
+          );
+
+          print(response.statusCode);
+          print(response.data);
+          if (response.statusCode == 200) {
+            List<Tag> tagList = [];
+            String imgString = Utility.base64String(file.readAsBytesSync());
+            Map<String, dynamic> responseObject = response.data;
+            responseObject.keys.toList().forEach((key) {
+              final data = responseObject[key];
+              data.forEach((veryComplexMap) {
+                String tagName = key;
+                Tag tag = Tag(
+                  tagName: tagName,
+                  startCoordinate: Coord(
+                    veryComplexMap['start']['x'],
+                    veryComplexMap['start']['y'],
+                  ),
+                  endCoordinate: Coord(
+                    veryComplexMap['end']['x'],
+                    veryComplexMap['end']['y'],
+                  ),
+                );
+                tagList.add(tag);
+              });
+            });
+            print(tagList);
+            Photo photo = Photo(
+              title: imgString,
+              projectId: widget.project.id,
+            );
+            photo = await dbHelper.savePhoto(photo);
             print(
-                'tag saved as ${tag.tagName} for photo ${tag.photoId} with start as ${tag.startCoordinate.toString()} and end as ${tag.endCoordinate.toString()}');
-          });
-          refreshPhotos();
-        } else {
+                "photo saved with id = ${photo.id} and project id = ${photo.projectId}");
+            tagList.forEach((tag) async {
+              tag.photoId = photo.id;
+              tag.projectId = widget.project.id;
+              tag = await dbHelper.saveTag(tag);
+              print(
+                  'tag saved as ${tag.tagName} for photo ${tag.photoId} with start as ${tag.startCoordinate.toString()} and end as ${tag.endCoordinate.toString()}');
+            });
+            refreshPhotos();
+          } else {
+            Fluttertoast.showToast(msg: "Some error occured");
+          }
+        } on DioError catch (e) {
+          print(e.toString());
           Fluttertoast.showToast(msg: "Some error occured");
         }
-      } on DioError catch (e) {
-        print(e.toString());
-        Fluttertoast.showToast(msg: "Some error occured");
+        setState(() {
+          isLoading = false;
+        });
       }
-      setState(() {
-        isLoading = false;
-      });
     });
   }
 

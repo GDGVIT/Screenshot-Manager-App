@@ -3,10 +3,12 @@ class Tag {
   String tagName;
   String comment;
   int photoId;
+  int projectId;
   Coord startCoordinate;
   Coord endCoordinate;
   Tag({
     this.tagId,
+    this.projectId,
     this.photoId,
     this.tagName,
     this.startCoordinate,
@@ -19,6 +21,7 @@ class Tag {
       'tagId': tagId,
       'imageId': photoId,
       'tagName': tagName,
+      'tag_projectId':projectId,
       'start_coord': startCoordinate.toString(),
       'end_coord': endCoordinate.toString(),
       'comment': comment,
@@ -28,6 +31,7 @@ class Tag {
 
   Tag.fromMap(Map map) {
     tagId = map['tagId'];
+    projectId = map['tag_projectId'];
     photoId = map['imageId'];
     tagName = map['tagName'];
     startCoordinate = Coord.fromString(map['start_coord']);
