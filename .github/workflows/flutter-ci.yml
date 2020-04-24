@@ -32,7 +32,7 @@ jobs:
       # setup flutter env
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.12.13+hotfix.5'
+          flutter-version: '1.12.13+hotfix.9'
 
         
       # get packages
@@ -64,7 +64,7 @@ jobs:
           to: ${{secrets.TELEGRAM_CHANNEL}}
           token: ${{secrets.TELEGRAM_BOT_APIKEY}}
           document: build/app/outputs/apk/release/app-release.apk
-          message: Here is the latest testing build for you for Screenshot Manager
+          message: Screenshot Manager- Latest apk. Uninstall previous version.
 
 
 
