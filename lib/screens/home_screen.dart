@@ -84,6 +84,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                               borderRadius: BorderRadius.circular(5),
                               child: TextField(
                                 controller: titlecontroller,
+                                maxLength: 100,
                                 onSubmitted: (string) => _onSubmit,
                                 decoration: InputDecoration(
                                   hintText: 'Name',
@@ -95,20 +96,26 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                             ),
                           ),
                           Spacer(),
-                          Container(
-                            height: 45,
-                            child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Text('Done'),
-                              color: primaryColor,
-                              textColor: Colors.white,
-                              onPressed: () {
-                                _onSubmit();
-                                Navigator.of(context).maybePop();
-                                titlecontroller.clear();
-                              },
-                            ),
+                          Column(
+                            children: <Widget>[
+                              Container(
+                                height: 45,
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Text('Done'),
+                                  color: primaryColor,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    _onSubmit();
+                                    Navigator.of(context).maybePop();
+                                    titlecontroller.clear();
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 20,),
+                            ],
                           ),
                         ],
                       ),
@@ -165,37 +172,72 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           )
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.05),
-            padding: EdgeInsets.only(top: 20, bottom: 15),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'My Projects',
-              style: headingTextStyle,
-            ),
-          ),
-          Expanded(
-            child: FutureBuilder(
-              future: dbHelper.getProjects(),
-              builder: (ctx, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                myProjects = snapshot.data;
-                if (myProjects.length == 0) {
-                  return Center(
-                    child: Text(
-                      'Tap \'+\' to add a new project',
-                      style: TextStyle(color: accentColor),
-                    ),
-                  );
-                } else {
-                  return ListView.builder(
+      body: FutureBuilder(
+        future: dbHelper.getProjects(),
+        builder: (ctx, snapshot) {
+          if (!snapshot.hasData) {
+            return Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05),
+                  padding: EdgeInsets.only(top: 20, bottom: 15),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'My Projects',
+                    style: headingTextStyle,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.38,
+                ),
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            );
+          }
+          myProjects = snapshot.data;
+          if (myProjects.length == 0) {
+            return Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05),
+                  padding: EdgeInsets.only(top: 20, bottom: 15),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'My Projects',
+                    style: headingTextStyle,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.38,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Tap \'+\' to add a new project',
+                    style: TextStyle(color: accentColor),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05),
+                  padding: EdgeInsets.only(top: 20, bottom: 15),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'My Projects',
+                    style: headingTextStyle,
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
                     itemCount: myProjects.length,
                     itemBuilder: (ctx, index) {
                       return Dismissible(
@@ -225,7 +267,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                               .then((_) {
                             myProjects.removeWhere((project) =>
                                 project.id == myProjects[index].id);
-                            if(myProjects.length == 0){
+                            if (myProjects.length == 0) {
                               setState(() {
                                 dbHelper.getProjects();
                               });
@@ -237,20 +279,12 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                         ),
                       );
                     },
-                  );
-                }
-              },
-            ),
-          ),
-          // Expanded(
-          //   child: ListView.builder(
-          //     itemCount: myProjects.length,
-          //     itemBuilder: (ctx, index) {
-          //       return MyProjectWidget(project: myProjects[index]);
-          //     },
-          //   ),
-          // ),
-        ],
+                  ),
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }

@@ -110,6 +110,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                 "photo saved with id = ${photo.id} and project id = ${photo.projectId}");
             tagList.forEach((tag) async {
               tag.photoId = photo.id;
+              tag.projectId = widget.project.id;
               tag = await dbHelper.saveTag(tag);
               print(
                   'tag saved as ${tag.tagName} for photo ${tag.photoId} with start as ${tag.startCoordinate.toString()} and end as ${tag.endCoordinate.toString()}');

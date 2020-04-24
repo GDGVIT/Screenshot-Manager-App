@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xFF34495E),
         accentColor: Color(0xFF798EA5),
-        canvasColor: Color(0xFFfafcff),
+        canvasColor: Color(0xFFF6F6F6),
         pageTransitionsTheme: PageTransitionsTheme(builders: {
           TargetPlatform.android: ZoomPageTransitionsBuilder(),
         }),

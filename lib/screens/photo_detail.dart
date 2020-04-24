@@ -32,7 +32,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
     dbHelper.updateTagComment(tagId, comment);
   }
 
-  showTextBox(int tagId, String comment, String name) {
+  showTextBox(int tagId, String comment, String name, int number) {
     print('tag id is $tagId');
 
     showDialog(
@@ -40,7 +40,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
       // barrierDismissible: false,
       child: AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        title: Text('Add/Edit Comment for $name'),
+        title: Text('Add/Edit Comment for $name ${number+1}'),
         content: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: Container(
@@ -74,8 +74,8 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete),
-            onPressed: (){
-              dbHelper.deletePhoto(widget.photo.id).then((value){
+            onPressed: () {
+              dbHelper.deletePhoto(widget.photo.id).then((value) {
                 Navigator.of(context).pop();
                 Fluttertoast.showToast(msg: 'Photo removed');
               });
@@ -114,6 +114,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                                   tagList[i].tagId,
                                   tagList[i].comment,
                                   tagList[i].tagName,
+                                  i,
                                 );
                               },
                               child: Chip(
@@ -136,7 +137,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                     child: Stack(
                       children: <Widget>[
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(10),
                           child: Utility.imageFromBase64String(
                             widget.photo.title,
                           ),
@@ -144,13 +145,19 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                         for (int i = 0; i < tagList.length; i++)
                           Positioned(
                             top: double.parse(
-                                    '${tagList[i].startCoordinate.y}')*0.75,
+                                    '${tagList[i].startCoordinate.y}') *
+                                0.75,
                             child: GestureDetector(
+                              onLongPress: (){
+                                print("hi");
+                                Fluttertoast.showToast(msg: '${tagList[i].tagName} ${i+1}');
+                              },
                               onTap: () {
                                 showTextBox(
                                   tagList[i].tagId,
                                   tagList[i].comment,
                                   tagList[i].tagName,
+                                  i,
                                 );
                               },
                               child: Container(
@@ -160,20 +167,28 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.zero,
-                                  child: Text(
-                                    '${i + 1}',
-                                    style: TextStyle(
-                                        color: Colors.red, fontSize: 16),
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: CircleAvatar(
+                                      backgroundColor: primaryColor.withOpacity(0.5),
+                                      child: Text(
+                                        '${i + 1}',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 16),
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 width: (double.parse(
                                             '${tagList[i].endCoordinate.x}') -
                                         double.parse(
-                                            '${tagList[i].startCoordinate.x}'))*0.75,
+                                            '${tagList[i].startCoordinate.x}')) *
+                                    0.75,
                                 height: (double.parse(
                                             '${tagList[i].endCoordinate.y}') -
                                         double.parse(
-                                            '${tagList[i].startCoordinate.y}'))*0.75,
+                                            '${tagList[i].startCoordinate.y}')) *
+                                    0.75,
                               ),
                             ),
                           ),

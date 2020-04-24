@@ -22,6 +22,7 @@ class DBHelper {
   static const String TAG_TABLE = 'tags';
   static const String TAG_ID = 'tagId';
   static const String TAG_IMAGE_ID = 'imageId';
+  static const String TAG_PROJECT_ID = 'tag_projectId';
   static const String TAG_NAME = 'tagName';
   static const String TAG_COMMENT = 'comment';
   static const String TAG_START_COORD = 'start_coord';
@@ -56,7 +57,7 @@ class DBHelper {
       'CREATE TABLE $IMAGE_TABLE ($IMAGE_ID INTEGER PRIMARY KEY AUTOINCREMENT, $IMAGE_TITLE TEXT, $IMAGE_PROJECT_ID INTEGER)',
     );
     await db.execute(
-      'CREATE TABLE $TAG_TABLE ($TAG_ID INTEGER PRIMARY KEY AUTOINCREMENT,$TAG_IMAGE_ID INTEGER, $TAG_NAME TEXT ,$TAG_COMMENT TEXT, $TAG_START_COORD TEXT, $TAG_END_COORD TEXT)',
+      'CREATE TABLE $TAG_TABLE ($TAG_ID INTEGER PRIMARY KEY AUTOINCREMENT,$TAG_IMAGE_ID INTEGER, $TAG_PROJECT_ID INTEGER ,  $TAG_NAME TEXT ,$TAG_COMMENT TEXT, $TAG_START_COORD TEXT, $TAG_END_COORD TEXT)',
     );
   }
 
@@ -139,22 +140,22 @@ class DBHelper {
 
   Future<int> deleteProject(int id) async {
     var dbClient = await db;
+    int deletedTags = await dbClient.delete(TAG_TABLE, where: '$TAG_PROJECT_ID == $id');
     int deletedPhotos =
         await dbClient.delete(IMAGE_TABLE, where: '$IMAGE_PROJECT_ID == $id ');
     int deletedProject =
         await dbClient.delete(PROJECT_TABLE, where: '$PROJECT_ID == $id');
-    print("project with id = $id removed, $deletedPhotos photos");
+    print("project with id = $id removed, deleted $deletedPhotos photos and $deletedTags tags");
     return deletedProject;
   }
 
   Future<int> deletePhoto(int photoID) async{
     var dbClient = await db;
+    int deletedTags = await dbClient.delete(TAG_TABLE, where: '$TAG_IMAGE_ID == $photoID');
     int photoDeleted = await dbClient.delete(IMAGE_TABLE, where: '$IMAGE_ID == $photoID');
-    print('image with id $photoID deleted, function returned $photoDeleted');
+    print('image with id $photoID deleted, $deletedTags tags deleted');
     return photoDeleted;
   }
-
-
 
   Future close() async {
     var dbClient = await db;
