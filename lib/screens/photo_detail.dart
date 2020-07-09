@@ -52,8 +52,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
       // imgFile.writeAsBytes(pngBytes);
       String str = "";
       for (int i = 0; i < tagList.length; i++) {
-        str +=
-            '${tagList[i].tagName} ${i + 1}\n ${tagList[i].comment}\n';
+        str += '*${tagList[i].tagName} - ${i + 1}*\n${tagList[i].comment}\n\n';
       }
       Share.file(
         "Screenshot comments",
@@ -167,7 +166,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                                 child: Chip(
                                   backgroundColor: primaryColor,
                                   label: Text(
-                                    tagList[i].tagName + ' ${i + 1}',
+                                    tagList[i].tagName + ' - ${i + 1}',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
