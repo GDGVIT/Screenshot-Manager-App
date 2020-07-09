@@ -1,6 +1,6 @@
 <p align="center">
 	<img src="https://user-images.githubusercontent.com/30529572/72455010-fb38d400-37e7-11ea-9c1e-8cdeb5f5906e.png" />
-	<h2 align="center">Screenshot Manager</h2>
+	<h2 align="center">SkreenShot: Screenshot Manager</h2>
 	<h4 align="center">An app for easily annotating your screenshots to suggest changes to frontend developers<h4>
 </p>
 
@@ -10,10 +10,12 @@
 
 
 ## Functionalities
-- [ ]  Create projects and start adding screenshots
-- [ ]  All screenshots managed under projects
-- [ ]  Annotate and comment on screenshots
-- [ ]  Easily delete projects and screenshots
+- [x]  Create projects and start adding screenshots
+- [x]  All screenshots managed under projects
+- [x]  Annotate and comment on screenshots
+- [x]  Easily delete projects and screenshots
+- [x]  Share screenshots
+- [ ]  Share projects and collaborations
 
 
 <br>
