@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Screenshot Manager',
+      title: 'SkreenShot',
       theme: ThemeData(
         primaryColor: Color(0xFF34495E),
         accentColor: Color(0xFF798EA5),

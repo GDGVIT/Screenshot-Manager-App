@@ -1,4 +1,4 @@
-package com.example.screenshot_manager
+package com.dscvit.screenshot_manager
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

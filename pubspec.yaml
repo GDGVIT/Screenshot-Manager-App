@@ -29,6 +29,7 @@ dependencies:
   provider:
   dio:
   fluttertoast:
+  esys_flutter_share:
 
 dev_dependencies:
   flutter_test:
