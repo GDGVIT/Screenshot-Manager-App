@@ -1,8 +1,10 @@
-<p align="center">
+<div align="center">
 	<img src="https://user-images.githubusercontent.com/30529572/72455010-fb38d400-37e7-11ea-9c1e-8cdeb5f5906e.png" />
-	<h2 align="center">Screenshot Manager</h2>
+	<h2 align="center">SkreenShot: Screenshot Manager</h2>
 	<h4 align="center">An app for easily annotating your screenshots to suggest changes to frontend developers<h4>
-</p>
+	<img src = "https://raw.githubusercontent.com/BRO3886/Screenshot-Manager-App/master/screenshots/icon.png" height=256>
+</div>
+
 
 ---
 [![DOCS](https://img.shields.io/badge/Documentation-see%20docs-green?style=flat-square&logo=appveyor)](INSERT_LINK_FOR_DOCS_HERE) 
@@ -10,10 +12,12 @@
 
 
 ## Functionalities
-- [ ]  Create projects and start adding screenshots
-- [ ]  All screenshots managed under projects
-- [ ]  Annotate and comment on screenshots
-- [ ]  Easily delete projects and screenshots
+- [x]  Create projects and start adding screenshots
+- [x]  All screenshots managed under projects
+- [x]  Annotate and comment on screenshots
+- [x]  Easily delete projects and screenshots
+- [x]  Share screenshots
+- [ ]  Share projects and collaborations
 
 
 <br>
@@ -42,7 +46,8 @@ flutter run -v
 
 ## Contributors
 
-* [Siddhartha Varma](https://github.com/BRO3886)
+* [Siddhartha Varma - App](https://github.com/BRO3886)
+* [Chanakya - ML and Backend](https://github.com/chanakya1310)
 
 
 
