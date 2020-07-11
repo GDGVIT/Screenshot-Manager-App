@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io' as io;
+
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:screenshot_manager/models/local_img.dart';
-import 'package:screenshot_manager/models/tag.dart';
-import '../models/project.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../models/local_img.dart';
+import '../models/project.dart';
+import '../models/tag.dart';
 
 class DBHelper {
   static Database _db;

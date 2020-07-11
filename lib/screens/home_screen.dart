@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:screenshot_manager/widgets/project_widget.dart';
+
 import '../models/project.dart';
 import '../services/db_helper.dart';
 import '../utils.dart';
+import '../widgets/project_widget.dart';
 
 class MyHomeScreen extends StatefulWidget {
   @override

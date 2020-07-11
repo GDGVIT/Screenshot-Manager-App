@@ -7,10 +7,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:screenshot_manager/models/local_img.dart';
-import 'package:screenshot_manager/models/tag.dart';
-import 'package:screenshot_manager/services/db_helper.dart';
-import 'package:screenshot_manager/utils.dart';
+import '../models/local_img.dart';
+import '../models/tag.dart';
+import '../services/db_helper.dart';
+import '../utils.dart';
 import 'dart:ui' as ui;
 
 import '../utils.dart';
@@ -78,6 +78,18 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
       context: context,
       // barrierDismissible: false,
       child: AlertDialog(
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              'DISMISS',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: primaryColor,
+              ),
+            ),
+            onPressed: () => Navigator.maybePop(context),
+          ),
+        ],
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         title: Text('Add/Edit Comment for $name ${number + 1}'),
         content: ClipRRect(
@@ -89,7 +101,8 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
               onChanged: (value) {
                 _onSaved(tagId, value);
               },
-              maxLines: 4,
+              minLines: 1,
+              maxLines: 7,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 filled: true,
