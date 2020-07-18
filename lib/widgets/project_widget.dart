@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:screenshot_manager/utils.dart';
+
 import '../models/project.dart';
 import '../screens/project_screen.dart';
+import '../utils.dart';
 
 class MyProjectWidget extends StatelessWidget {
   final Project project;

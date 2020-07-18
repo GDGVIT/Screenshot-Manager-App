@@ -1,16 +1,17 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:screenshot_manager/models/local_img.dart';
-import 'package:screenshot_manager/models/project.dart';
-import 'package:screenshot_manager/models/tag.dart';
-import 'package:screenshot_manager/screens/photo_detail.dart';
-import 'package:screenshot_manager/services/db_helper.dart';
 
+import '../models/local_img.dart';
+import '../models/project.dart';
+import '../models/tag.dart';
+import '../services/db_helper.dart';
 import '../utils.dart';
+import 'photo_detail.dart';
 
 class ProjectScreen extends StatefulWidget {
   final Project project;
@@ -32,6 +33,15 @@ class _ProjectScreenState extends State<ProjectScreen> {
     dbHelper = DBHelper();
     myPhotos = [];
     super.initState();
+  }
+
+  @override
+  // ignore: must_call_super
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    myPhotos.forEach((element) {
+      precacheImage(MemoryImage(base64Decode(element.title)), context);
+    });
   }
 
   pickImageFromGallery() {
@@ -117,11 +127,15 @@ class _ProjectScreenState extends State<ProjectScreen> {
             });
             refreshPhotos();
           } else {
-            Fluttertoast.showToast(msg: "Some error occured");
+            Fluttertoast.showToast(
+                msg:
+                    "Some error occured while performing OCR. Please try again.");
           }
         } on DioError catch (e) {
           print(e.toString());
-          Fluttertoast.showToast(msg: "Some error occured");
+          Fluttertoast.showToast(
+              msg:
+                  "Some error occured while performing OCR. Please try again.");
         }
         setState(() {
           isLoading = false;
@@ -202,8 +216,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
                               ),
                             ),
                             child: Utility.imageFromBase64String(
-                              myPhotos[index].title,
-                            ),
+                                  myPhotos[index].title,
+                                ) ??
+                                CircularProgressIndicator(),
                           ),
                         );
                       },
