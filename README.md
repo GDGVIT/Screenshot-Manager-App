@@ -1,10 +1,16 @@
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/30529572/72455010-fb38d400-37e7-11ea-9c1e-8cdeb5f5906e.png" />
+	<a href="https://dscvit.com">
+		<img src="https://user-images.githubusercontent.com/30529572/92081025-fabe6f00-edb1-11ea-9169-4a8a61a5dd45.png" alt="DSC VIT"/>
+	</a>
 	<h2 align="center">SkreenShot: Screenshot Manager</h2>
 	<h4 align="center">An app for easily annotating your screenshots to suggest changes to frontend developers<h4>
-	<img src = "https://raw.githubusercontent.com/BRO3886/Screenshot-Manager-App/master/screenshots/icon.png" height=256>
 </div>
 
+<div align="center">
+	<img src = "https://raw.githubusercontent.com/BRO3886/Screenshot-Manager-App/master/screenshots/icon.png" height=150>
+	<br>
+	<a href='https://play.google.com/store/apps/details?id=com.dscvit.screenshot_manager&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height="48"/></a>
+</div>
 
 ---
 [![BACKEND DOCS](https://img.shields.io/badge/Documentation-see%20docs-green?style=flat-square&logo=appveyor)](https://documenter.getpostman.com/view/8264045/SzS8u5y4?version=latest) 
