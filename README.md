@@ -36,13 +36,13 @@
 	- Android Studio
 	- Flutter SDK
 
-* < directions to install > 
+* Directions to Install
 ```bash
 git clone https://github.com/GDGVIT/Screenshot-Manager-App.git
 flutter doctor
 ```
 
-* < directions to execute >
+* Directions to Execute 
 
 ```bash
 flutter run -v
